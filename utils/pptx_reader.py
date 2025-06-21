@@ -4,10 +4,15 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pathlib import Path
 
 
-def read_pptx(inputpath, outpath):
+def extract_text_and_images(inputpath, outpath):
   prs = Presentation(inputpath)
   if not outpath.exists():
     outpath.mkdir(parents=True)
+  
+  savetxtdir = outpath / "text"
+  saveimgdir = outpath / "img"
+  savetxtdir.mkdir(exist_ok=True)
+  saveimgdir.mkdir(exist_ok=True)
   
   for i, slide in enumerate(prs.slides):
     text_items = []
@@ -21,7 +26,7 @@ def read_pptx(inputpath, outpath):
                 image_bytes = image.blob
                 image_format = image.ext
                 img_filename = f"slide{i+1}_img{image_count+1}.{image_format}"
-                saveimgpath = outpath / img_filename
+                saveimgpath = saveimgdir / img_filename
                 with open(saveimgpath, "wb") as f:
                     f.write(image_bytes)
                 image_count += 1
@@ -32,6 +37,6 @@ def read_pptx(inputpath, outpath):
                 text_items.append(text)
 
     # スライド単位でテキスト出力
-    txtsavepath = outpath / f"slide{i+1}_text.txt"
+    txtsavepath = savetxtdir / f"slide{i+1}_text.txt"
     with open(txtsavepath, "w", encoding="utf-8") as f:
         f.write("\n\n".join(text_items))
