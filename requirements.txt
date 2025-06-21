@@ -8,3 +8,4 @@ accelerate
 janome
 pyngrok
 python-pptx
+google-generativeai
