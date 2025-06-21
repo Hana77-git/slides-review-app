@@ -7,7 +7,7 @@ from io import BytesIO
 from pathlib import Path
 
 from utils.pptx_reader import extract_text_and_images
-# from utils.question_generator import generate_question
+from utils.question_generator_gemini import generate_question
 from utils.image_search import search_image_sources
 
 # タイトル
@@ -39,8 +39,8 @@ if uploaded_file:
       st.text(slide_text)
 
       st.markdown("**❓ 想定される質問：**")
-      # question = generate_question(slide_text)
-      # st.text(question)
+      question = generate_question(slide_text)
+      st.text(question)
       
     for i, image in enumerate(images):
       st.subheader(f"Image {i+1}")
